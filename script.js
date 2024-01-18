@@ -48,13 +48,14 @@ async function searchTable() {
     console.log(searchInput);
 
     const response = await fetch(
-      "https://newsic-api.vercel.app//semantic-search",
+      "https://newsic-api.vercel.app/semantic-search",
       {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(requestBody),
+        mode: "cors",
       }
     );
 
