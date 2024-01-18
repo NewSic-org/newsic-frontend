@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Newsic Database Viewer</title>
+</head>
+<link rel="stylesheet" href="style.css">
+<body>
+
+<h1>Newsic Database Viewer</h1>
+
+<div class="search-container">
+    <input type="text" id="searchInput" placeholder="Search for articles..." class="search-input">
+    <button onclick="searchTable()" class="search-button">Search</button>
+</div>
+
+
+<table id="dataTable">
+    <thead>
+        <tr>
+            <th>Article Title</th>
+            <th>Song Title</th>
+            <th>Song</th>
+        </tr>
+    </thead>
+    <tbody id="tableBody">
+        
+    </tbody>
+</table>
+
+<div class="pagination">
+    <button onclick="previousPage()">Previous</button>
+    <span class="currentPage" id="currentPage">1</span>
+    <button onclick="nextPage()">Next</button>
+</div>
+
+<script src="script.js"></script>
+</body>
+</html>
