@@ -3,7 +3,7 @@ let currentPage = 1;
 let data;
 
 function fetchData() {
-  fetch("https://newsic-api.vercel.app/api/data")
+  fetch("http://newsic-api.vercel.app/api/data")
     .then((response) => response.json())
     .then((result) => {
       data = result;
@@ -48,7 +48,7 @@ async function searchTable() {
     console.log(searchInput);
 
     const response = await fetch(
-      "https://newsic-api.vercel.app/semantic-search",
+      "http://newsic-api.vercel.app/semantic-search",
       {
         method: "POST",
         headers: {
