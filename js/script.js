@@ -11,14 +11,13 @@ function fetchData() {
     });
 }
 
-
 function updateTable() {
   const tableBody = document.getElementById("tableBody");
   tableBody.innerHTML = "";
 
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-  
+
   // Ensure the currentPage is within valid bounds
   if (startIndex >= 0 && startIndex < data.response.length) {
     const slicedData = data.response.slice(startIndex, endIndex);
@@ -37,9 +36,10 @@ function updateTable() {
       const regenerateButton = document.createElement("button");
       regenerateButton.classList.add("regenerate-button");
       regenerateButton.innerText = "Regenerate";
-      regenerateButton.addEventListener("click", () => regenerateSummary(article.summary, article.art_title));
-      regenerateCell.appendChild(regenerateButton);     
-      
+      regenerateButton.addEventListener("click", () =>
+        regenerateSummary(article.summary, article.art_title)
+      );
+      regenerateCell.appendChild(regenerateButton);
     });
 
     document.getElementById("currentPage").innerText = currentPage;
@@ -59,28 +59,28 @@ function regenerateSummary(summary, title) {
   requestBody = { summary: summary, title: title };
   console.log("Regenerate Summary:", summary);
   console.log(requestBody);
-    (async () => {
-      try {
-        const response = await fetch("http://127.0.0.1:5000/regenerate", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(requestBody),
-        });
-  
-        if (!response.ok) {
-          throw new Error(`HTTP error! Status: ${response.status}`);
-        }
-  
-        const data_gen = await response.json();
-        console.log(data_gen);
-        location.reload(true);
-      } catch (error) {
-        console.error("Error:", error);
+  (async () => {
+    try {
+      const response = await fetch("http://127.0.0.1:5000/regenerate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! Status: ${response.status}`);
       }
-    })();
-  }
+
+      const data_gen = await response.json();
+      console.log(data_gen);
+      location.reload(true);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  })();
+}
 
 function nextPage() {
   if (data && data.response) {
@@ -98,16 +98,13 @@ async function searchTable() {
     const requestBody = { search: searchInput };
     console.log(searchInput);
 
-    const response = await fetch(
-      "http://127.0.0.1:5000/semantic-search",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      }
-    );
+    const response = await fetch("http://127.0.0.1:5000/semantic-search", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(requestBody),
+    });
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
@@ -121,14 +118,12 @@ async function searchTable() {
   }
 }
 
-
 function previousPage() {
   if (currentPage > 1) {
     currentPage--;
     updateTable();
   }
 }
-
 
 const searchInput = document.getElementById("searchInput").value;
 if (searchInput.trim() !== "") {
@@ -137,52 +132,55 @@ if (searchInput.trim() !== "") {
   fetchData();
 }
 
-
 async function logout() {
-try {
-const response = await fetch('https://accounts.google.com/o/oauth2/revoke?token=' + info['access_token'], {
-    method: 'POST',
-    headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+  try {
+    const response = await fetch(
+      "https://accounts.google.com/o/oauth2/revoke?token=" +
+        info["access_token"],
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    if (response.ok) {
+      location.href = "https://newsic-frontend.vercel.app/";
+    } else {
+      console.error("Logout failed. Server response:", response);
     }
-});
-
-if (response.ok) {
-    location.href = "http://localhost:5500/frontend/index.html";
-} else {
-    console.error('Logout failed. Server response:', response);
-}
-} catch (error) {
-console.error('Logout error:', error);
-}
+  } catch (error) {
+    console.error("Logout error:", error);
+  }
 }
 
-let params = {}
+let params = {};
 
-let regex = /([^&=]+)=([^&]*)/g, m;
-while (m = regex.exec(location.href)) {
-    params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+let regex = /([^&=]+)=([^&]*)/g,
+  m;
+while ((m = regex.exec(location.href))) {
+  params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
 }
-if(Object.keys(params).length > 0){
-    localStorage.setItem("authInfo", JSON.stringify(params));
-
+if (Object.keys(params).length > 0) {
+  localStorage.setItem("authInfo", JSON.stringify(params));
 }
-window.history.pushState({}, document.title, "/" + "frontend/page.html");
+window.history.pushState({}, document.title, "/" + "page.html");
 let info = JSON.parse(localStorage.getItem("authInfo"));
 // console.log(info['access_token']);
 // console.log(info['expires_in']);
 // console.log(JSON.parse(localStorage.getItem("authInfo")));
-fetch('https://www.googleapis.com/oauth2/v3/userinfo', {
-headers: {
-    "Authorization": `Bearer ${info['access_token']}`
-}
+fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+  headers: {
+    Authorization: `Bearer ${info["access_token"]}`,
+  },
 })
-.then((data) => data.json())
-.then((info)=>{
-// console.log(info);
-document.getElementById("name").innerHTML += info.name;
-document.getElementById("image").setAttribute('src', info.picture);
-})
+  .then((data) => data.json())
+  .then((info) => {
+    // console.log(info);
+    document.getElementById("name").innerHTML += info.name;
+    document.getElementById("image").setAttribute("src", info.picture);
+  });
 
 function toggleProfileDialog() {
   const profileDialog = document.getElementById("profileDialog");

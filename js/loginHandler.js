@@ -7,7 +7,7 @@ function signInGoogle(){
 
     var params ={
         'client_id': '350107238897-vvkq0cffqq2bq4i9j13oqo1nsugbrlcg.apps.googleusercontent.com',
-        'redirect_uri': 'http://127.0.0.1:5500/frontend/page.html',
+        'redirect_uri': 'https://newsic-frontend.vercel.app/page.html',
         'response_type': 'token',
         'scope': 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/youtube.readonly',
         'include_granted_scopes': 'true',
