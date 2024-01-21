@@ -7,7 +7,7 @@ function signInGoogle() {
 
   var params = {
     client_id:
-      "350107238897-vvkq0cffqq2bq4i9j13oqo1nsugbrlcg.apps.googleusercontent.com",
+      "350107238897-6u6ko7qtrmvotinkmlasnl6beq2dm87a.apps.googleusercontent.com",
     redirect_uri: "https://newsic-frontend.vercel.app/page.html",
     response_type: "token",
     scope:
