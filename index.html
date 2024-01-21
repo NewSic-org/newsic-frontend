@@ -3,38 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Newsic Database Viewer</title>
+    <title>Login - Newsic Database Viewer</title>
+    <link rel="stylesheet" href="css/styleLogin.css">
 </head>
-<link rel="stylesheet" href="style.css">
 <body>
 
-<h1>Newsic Database Viewer</h1>
+<div class="login-container">
+    <h1>Login to Newsic</h1>
+    
+    <form>
+        <div class="input-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" class="login-input" required>
+        </div>
 
-<div class="search-container">
-    <input type="text" id="searchInput" placeholder="Search for articles..." class="search-input">
-    <button onclick="searchTable()" class="search-button">Search</button>
+        <div class="input-group">
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" class="login-input" required>
+        </div>
+
+        <div class="button-group">
+            <button type="button" onclick="login()">Login</button>
+            <button onclick="signInGoogle()">Login with Google</button>
+        </div>
+    </form>
 </div>
 
-
-<table id="dataTable">
-    <thead>
-        <tr>
-            <th>Article Title</th>
-            <th>Song Title</th>
-            <th>Song</th>
-        </tr>
-    </thead>
-    <tbody id="tableBody">
-        
-    </tbody>
-</table>
-
-<div class="pagination">
-    <button onclick="previousPage()">Previous</button>
-    <span class="currentPage" id="currentPage">1</span>
-    <button onclick="nextPage()">Next</button>
-</div>
-
-<script src="script.js"></script>
+<script src="js/loginHandler.js"></script>
 </body>
 </html>
