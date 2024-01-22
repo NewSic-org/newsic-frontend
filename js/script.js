@@ -3,7 +3,7 @@ let currentPage = 1;
 let data;
 
 function fetchData() {
-  fetch("http://127.0.0.1:5000/api/data")
+  fetch("https://newsic-api-neon.vercel.app/api/data")
     .then((response) => response.json())
     .then((result) => {
       data = result;
@@ -61,13 +61,16 @@ function regenerateSummary(summary, title) {
   console.log(requestBody);
   (async () => {
     try {
-      const response = await fetch("http://127.0.0.1:5000/regenerate", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(requestBody),
-      });
+      const response = await fetch(
+        "https://newsic-api-neon.vercel.app/regenerate",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(requestBody),
+        }
+      );
 
       if (!response.ok) {
         throw new Error(`HTTP error! Status: ${response.status}`);
@@ -98,13 +101,16 @@ async function searchTable() {
     const requestBody = { search: searchInput };
     console.log(searchInput);
 
-    const response = await fetch("http://127.0.0.1:5000/semantic-search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(requestBody),
-    });
+    const response = await fetch(
+      "https://newsic-api-neon.vercel.app/semantic-search",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(requestBody),
+      }
+    );
 
     if (!response.ok) {
       throw new Error(`HTTP error! Status: ${response.status}`);
