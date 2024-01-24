@@ -3,7 +3,7 @@ let currentPage = 1;
 let data;
 
 function fetchData() {
-  fetch("https://newsic-api-neon.vercel.app/api/data")
+  fetch("https://newsic-api.vercel.app/api/data")
     .then((response) => response.json())
     .then((result) => {
       data = result;
@@ -62,7 +62,7 @@ function regenerateSummary(summary, title) {
   (async () => {
     try {
       const response = await fetch(
-        "https://newsic-api-neon.vercel.app/regenerate",
+        "https://newsic-api.vercel.app/regenerate",
         {
           method: "POST",
           headers: {
@@ -102,7 +102,7 @@ async function searchTable() {
     console.log(searchInput);
 
     const response = await fetch(
-      "https://newsic-api-neon.vercel.app/semantic-search",
+      "https://newsic-api.vercel.app/semantic-search",
       {
         method: "POST",
         headers: {
