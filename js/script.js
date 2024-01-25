@@ -152,6 +152,7 @@ async function logout() {
     );
 
     if (response.ok) {
+      localStorage.removeItem("authInfo");
       location.href = "https://newsic-frontend.vercel.app/";
     } else {
       console.error("Logout failed. Server response:", response);
