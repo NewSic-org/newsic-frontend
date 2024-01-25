@@ -176,19 +176,24 @@ let info = JSON.parse(localStorage.getItem("authInfo"));
 // console.log(info['access_token']);
 // console.log(info['expires_in']);
 // console.log(JSON.parse(localStorage.getItem("authInfo")));
-fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-  headers: {
-    Authorization: `Bearer ${info["access_token"]}`,
-  },
-})
-  .then((data) => data.json())
-  .then((info) => {
-    // console.log(info);
-    document.getElementById("name").innerHTML += info.name;
-    document.getElementById("image").setAttribute("src", info.picture);
-  });
+if (!info || !info["access_token"]) {
+  window.location.href = "https://newsic-frontend.vercel.app/";
+} else {
+
+  fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+    headers: {
+      Authorization: `Bearer ${info["access_token"]}`,
+    },
+  })
+    .then((data) => data.json())
+    .then((userInfo) => {
+      document.getElementById("name").innerHTML += userInfo.name;
+      document.getElementById("image").setAttribute("src", userInfo.picture);
+    });
+}
 
 function toggleProfileDialog() {
   const profileDialog = document.getElementById("profileDialog");
   profileDialog.classList.toggle("show-dialog");
 }
+
