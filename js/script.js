@@ -2,8 +2,44 @@ const itemsPerPage = 10;
 let currentPage = 1;
 let data;
 
+let params = {};
+
+let regex = /([^&=]+)=([^&]*)/g,
+  m;
+while ((m = regex.exec(location.href))) {
+  params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
+}
+if (Object.keys(params).length > 0) {
+  localStorage.setItem("authInfo", JSON.stringify(params));
+}
+window.history.pushState({}, document.title, "/" + "page.html");
+let info = JSON.parse(localStorage.getItem("authInfo"));
+// console.log(info['access_token']);
+// console.log(info['expires_in']);
+// console.log(JSON.parse(localStorage.getItem("authInfo")));
+if (!info || !info["access_token"]) {
+  window.location.href = "https://newsic-frontend.vercel.app/";
+} else {
+
+  fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
+    headers: {
+      Authorization: `Bearer ${info["access_token"]}`,
+    },
+  })
+    .then((data) => data.json())
+    .then((userInfo) => {
+      document.getElementById("name").innerHTML += userInfo.name;
+      document.getElementById("image").setAttribute("src", userInfo.picture);
+    });
+}
+
+
 function fetchData() {
-  fetch("https://newsic-api.vercel.app/api/data")
+  fetch("https://newsic-api.vercel.app/api/data", {
+    headers: {
+      Authorization: `Bearer ${info["access_token"]}`,
+    },
+  })
     .then((response) => response.json())
     .then((result) => {
       data = result;
@@ -67,6 +103,7 @@ function regenerateSummary(summary, title) {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
+            Authorization: `Bearer ${info["access_token"]}`,
           },
           body: JSON.stringify(requestBody),
         }
@@ -107,6 +144,8 @@ async function searchTable() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${info["access_token"]}`,
+          
         },
         body: JSON.stringify(requestBody),
       }
@@ -152,6 +191,7 @@ async function logout() {
     );
 
     if (response.ok) {
+      localStorage.removeItem("authInfo");
       location.href = "https://newsic-frontend.vercel.app/";
     } else {
       console.error("Logout failed. Server response:", response);
@@ -161,36 +201,7 @@ async function logout() {
   }
 }
 
-let params = {};
 
-let regex = /([^&=]+)=([^&]*)/g,
-  m;
-while ((m = regex.exec(location.href))) {
-  params[decodeURIComponent(m[1])] = decodeURIComponent(m[2]);
-}
-if (Object.keys(params).length > 0) {
-  localStorage.setItem("authInfo", JSON.stringify(params));
-}
-window.history.pushState({}, document.title, "/" + "page.html");
-let info = JSON.parse(localStorage.getItem("authInfo"));
-// console.log(info['access_token']);
-// console.log(info['expires_in']);
-// console.log(JSON.parse(localStorage.getItem("authInfo")));
-if (!info || !info["access_token"]) {
-  window.location.href = "https://newsic-frontend.vercel.app/";
-} else {
-
-  fetch("https://www.googleapis.com/oauth2/v3/userinfo", {
-    headers: {
-      Authorization: `Bearer ${info["access_token"]}`,
-    },
-  })
-    .then((data) => data.json())
-    .then((userInfo) => {
-      document.getElementById("name").innerHTML += userInfo.name;
-      document.getElementById("image").setAttribute("src", userInfo.picture);
-    });
-}
 
 function toggleProfileDialog() {
   const profileDialog = document.getElementById("profileDialog");
